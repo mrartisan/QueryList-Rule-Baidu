@@ -89,7 +89,11 @@ class Baidu implements PluginContract
     protected  function getRealURL($url)
     {
         //得到百度跳转的真正地址
-        $header = get_headers($url,1);
+        @$header = get_headers($url,1);
+        //完善-网址失效-返回原来的网址
+        if ($header === false){
+            return $url;
+        }
         if (strpos($header[0],'301') || strpos($header[0],'302'))
         {
             if(is_array($header['Location']))
